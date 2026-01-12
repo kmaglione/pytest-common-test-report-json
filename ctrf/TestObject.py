@@ -81,9 +81,9 @@ class TestObject:
         self.set_status(report)
         self.duration += 1000 * report.duration  # pytest reports duration in seconds, CTRF requires milliseconds
         if report.when == "setup" and self.start == 0:
-            self.start = report.start
+            self.start = report.start * 1000
         if report.when == "teardown" and self.stop == 0:
-            self.stop = report.stop
+            self.stop = report.stop * 1000
         if report.longrepr and len(report.longreprtext) > 0:
             self.trace = report.longreprtext
         if hasattr(report, '_ctrf_metadata'):
@@ -95,9 +95,9 @@ class TestObject:
             'name': self.name,
             'status': self._status.value,
             'raw_status': self.raw_status,
-            'duration': self.duration,
-            'start': self.start,
-            'stop': self.stop,
+            'duration': round(self.duration),
+            'start': round(self.start),
+            'stop': round(self.stop),
             'retries': None if self.retries == 1 else self.retries,
             'file_path': self.file_path,
             'tags': self.tags,

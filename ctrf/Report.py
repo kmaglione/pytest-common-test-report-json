@@ -39,8 +39,8 @@ class Report:
             'skipped': len(self.list_tests_by_status(TestStatus.SKIPPED)),
             'pending': len(self.list_tests_by_status(TestStatus.PENDING)),
             'other': 0,
-            'start': self.start_time,
-            'stop': self.stop_time
+            'start': round(self.start_time * 1000),
+            'stop': round(self.stop_time * 1000)
         }
 
     def collect(self, report: TestReport) -> None:
