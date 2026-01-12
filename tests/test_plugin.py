@@ -2,8 +2,8 @@ import json
 from pytest import Pytester, fixture
 
 pytest_plugins = ["pytester", "xdist", "ctrf"]
-test_file = "tests/test_example.py"
-basic_test_args = ["-k", "test_example"]
+test_file = "test_example.py"
+basic_test_args = ["--import-mode=importlib", "-k", "test_example"]
 
 
 @fixture

@@ -33,11 +33,21 @@ classifiers = [
 "Infopulse" = "https://infopulse.com/"
 "Homepage" = "https://github.com/infopulse/pytest-common-test-report-json"
 
-[tool.pytest.ini_options]
+[tool.pytest]
 markers = [
     "smoke: marker for smoke tests",
     "regression: marker for regression tests",
+    "test_id",
 ]
+testpaths = [
+    "tests",
+]
+pytester_example_dir = "examples"
 
 [project.entry-points.pytest11]
 ctrf = "ctrf.main"
+
+[dependency-groups]
+dev = [
+    "pytest-xdist>=3.8.0",
+]
