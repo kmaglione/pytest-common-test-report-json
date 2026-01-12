@@ -63,16 +63,15 @@ def test_with_plugin_no_xdist(ctrf_report_sync):
 def test_with_plugin_failed_details(ctrf_report_sync):
     for test in ctrf_report_sync["results"]["tests"]:
         if test["status"] == "failed" and test.get("raw_status") == "call_failed":
-            assert test.get('trace') is not None
-            assert test.get("message") is not None
-            assert test.get("raw_status") is not None
+            assert isinstance(test.get('trace'), str)
+            assert isinstance(test.get("message"), str)
 
 
 def test_any_test_has_timestamps(ctrf_report_sync):
     for test in ctrf_report_sync["results"]["tests"]:
-        assert test.get("start") is not None
-        assert test.get("stop") is not None
-        assert test.get("duration") is not None
+        assert isinstance(test.get("start"), int)
+        assert isinstance(test.get("stop"), int)
+        assert isinstance(test.get("duration"), int)
 
 
 def test_with_plugin_with_xdist(ctrf_report_xdist):
@@ -87,13 +86,12 @@ def test_with_plugin_with_xdist(ctrf_report_xdist):
 def test_with_plugin_failed_details_xdist(ctrf_report_xdist):
     for test in ctrf_report_xdist["results"]["tests"]:
         if test["status"] == "failed" and test.get("raw_status") == "call_failed":
-            assert test.get('trace') is not None
-            assert test.get("message") is not None
-            assert test.get("raw_status") is not None
+            assert isinstance(test.get('trace'), str)
+            assert isinstance(test.get("message"), str)
 
 
 def test_any_test_has_timestamps_xdist(ctrf_report_xdist):
     for test in ctrf_report_xdist["results"]["tests"]:
-        assert test.get("start") is not None
-        assert test.get("stop") is not None
-        assert test.get("duration") is not None
+        assert isinstance(test.get("start"), int)
+        assert isinstance(test.get("stop"), int)
+        assert isinstance(test.get("duration"), int)
