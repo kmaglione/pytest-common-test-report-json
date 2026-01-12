@@ -1,6 +1,8 @@
 import json
 from pytest import Pytester, fixture
 
+from .conftest import PartialDict
+
 pytest_plugins = ["pytester", "xdist", "ctrf"]
 test_file = "test_example.py"
 basic_test_args = ["--import-mode=importlib", "-k", "test_example"]
@@ -41,17 +43,21 @@ def test_with_markers(pytester: Pytester):
     pytester.runpytest(*args)
     with open(pytester.path / "report.json") as file:
         report = json.load(file)
-    assert report["results"]["summary"]["tests"] == 1
-    assert report["results"]["summary"]["passed"] == 1
-    assert report["results"]["summary"]["failed"] == 0
-    assert report["results"]["summary"]["skipped"] == 0
+    assert report["results"]["summary"] >= PartialDict({
+        "tests": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+    })
 
 
 def test_with_plugin_no_xdist(ctrf_report_sync):
-    assert ctrf_report_sync["results"]["summary"]["tests"] == 12
-    assert ctrf_report_sync["results"]["summary"]["passed"] == 6
-    assert ctrf_report_sync["results"]["summary"]["failed"] == 5
-    assert ctrf_report_sync["results"]["summary"]["skipped"] == 1
+    assert ctrf_report_sync["results"]["summary"] >= PartialDict({
+        "tests": 12,
+        "passed": 6,
+        "failed": 5,
+        "skipped": 1,
+    })
 
 
 def test_with_plugin_failed_details(ctrf_report_sync):
@@ -70,10 +76,12 @@ def test_any_test_has_timestamps(ctrf_report_sync):
 
 
 def test_with_plugin_with_xdist(ctrf_report_xdist):
-    assert ctrf_report_xdist["results"]["summary"]["tests"] == 12
-    assert ctrf_report_xdist["results"]["summary"]["passed"] == 6
-    assert ctrf_report_xdist["results"]["summary"]["failed"] == 5
-    assert ctrf_report_xdist["results"]["summary"]["skipped"] == 1
+    assert ctrf_report_xdist["results"]["summary"] >= PartialDict({
+        "tests": 12,
+        "passed": 6,
+        "failed": 5,
+        "skipped": 1,
+    })
 
 
 def test_with_plugin_failed_details_xdist(ctrf_report_xdist):
