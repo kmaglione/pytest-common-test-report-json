@@ -96,17 +96,17 @@ def test_any_test_has_timestamps_xdist(ctrf_report_xdist):
         assert isinstance(test.get("start"), int)
         assert isinstance(test.get("stop"), int)
         assert isinstance(test.get("duration"), int)
-        if test["name"] == "test_example.py::test_with_ctrf_suite_mark":
+        if test["name"] == "test_with_ctrf_suite_mark":
             assert test.get("suite") == ["suite_name"]
         else:
-            assert test.get("suite") == ["pytest"]
+            assert test.get("suite") == ["pytest", "test_example.py"]
 
 
 def test_ctrf_suite_option(pytester: Pytester):
     report = run_pytest(pytester, "--ctrf-suite=custom_suite")
 
     for test in report["results"]["tests"]:
-        if test["name"] == "test_example.py::test_with_ctrf_suite_mark":
+        if test["name"] == "test_with_ctrf_suite_mark":
             assert test.get("suite") == ["suite_name"]
         else:
-            assert test.get("suite") == ["custom_suite"]
+            assert test.get("suite") == ["custom_suite", "test_example.py"]
