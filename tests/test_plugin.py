@@ -63,7 +63,7 @@ def test_with_plugin_no_xdist(ctrf_report_sync):
 
 def test_with_plugin_failed_details(ctrf_report_sync):
     for test in ctrf_report_sync["results"]["tests"]:
-        if test["status"] == "failed" and test.get("raw_status") == "call_failed":
+        if test["status"] == "failed" and test.get("rawStatus") == "call_failed":
             assert isinstance(test.get('trace'), str)
             assert isinstance(test.get("message"), str)
 
@@ -86,7 +86,7 @@ def test_with_plugin_with_xdist(ctrf_report_xdist):
 
 def test_with_plugin_failed_details_xdist(ctrf_report_xdist):
     for test in ctrf_report_xdist["results"]["tests"]:
-        if test["status"] == "failed" and test.get("raw_status") == "call_failed":
+        if test["status"] == "failed" and test.get("rawStatus") == "call_failed":
             assert isinstance(test.get('trace'), str)
             assert isinstance(test.get("message"), str)
 
