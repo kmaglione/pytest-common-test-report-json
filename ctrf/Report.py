@@ -9,11 +9,12 @@ from .TestObject import TestObject, TestStatus
 
 
 class Report:
-    def __init__(self):
+    def __init__(self, config: pytest.Config):
         self.test_items = OrderedDict()
         self.prepared_tests = dict()
         self.start_time = None
         self.stop_time = None
+        self.suite_name = config.option.ctrf_suite
 
     def start(self) -> None:
         self.start_time = time.time()
@@ -46,7 +47,7 @@ class Report:
     def collect(self, report: TestReport) -> None:
         if report.nodeid not in self.test_items.keys():
             worker_id = getattr(report, 'worker_id', None)
-            test = TestObject(report, worker_id)
+            test = TestObject(self, report, worker_id)
         else:
             test = self.test_items.get(report.nodeid)  # type: ignore
         test.update(report)

@@ -1,11 +1,11 @@
-from pytest import hookimpl, TestReport
+from pytest import hookimpl, Config, TestReport
 from collections import OrderedDict
 from .BaseMetadataReport import metadata, BaseMetadataReport
 
 
 class CTRF(BaseMetadataReport):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, config: Config):
+        super().__init__(config)
         self._json_tests = OrderedDict()
 
     @hookimpl(tryfirst=True)

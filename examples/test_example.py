@@ -63,3 +63,7 @@ def test_with_test_id():
 @mark.test_id(1235)
 def test_with_test_id_2():
     assert 1 == 1
+
+@mark.ctrf_suite('suite_name')
+def test_with_ctrf_suite_mark():
+    assert 1 == 1

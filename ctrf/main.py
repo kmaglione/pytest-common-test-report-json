@@ -8,15 +8,23 @@ def pytest_addoption(parser: Parser):
     group.addoption('--ctrf',
                     action='store',
                     help='generate test report. Report file name is optional')
+    group.addoption('--ctrf-suite',
+                    action='store',
+                    default='pytest',
+                    help='Suite name to use in CTRF report')
 
 
 def pytest_configure(config: Config):
+    config.addinivalue_line(
+        "markers", "ctrf_suite(name): set the CTRF suite name for use in the test report"
+    )
+
     if not config.option.ctrf:
         return
     if hasattr(config, 'workerinput'):
-        plugin = BaseMetadataReport()
+        plugin = BaseMetadataReport(config)
     else:
-        plugin = CTRF()
+        plugin = CTRF(config)
     setattr(config, '_ctrf', plugin)
     config.pluginmanager.register(plugin, name='ctrf_plugin')
     pass
@@ -37,6 +45,8 @@ def ctrf_json_metadata(request: FixtureRequest):
     tags = list()
     for mark in request.node.iter_markers():
         tag = mark.name
+        if tag == 'ctrf_suite':
+            request.node._ctrf_metadata['suite'] = mark.args
         if mark.args:
             for arg in mark.args:
                 tag += f'::{arg}'

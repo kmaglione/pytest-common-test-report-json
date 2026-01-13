@@ -9,15 +9,15 @@ class BaseMetadataReport:
     from test nodes from different workers and
     transfer it the report objects'''
 
-    def __init__(self):
-        self._report = Report()
+    def __init__(self, config: Config):
+        self._report = Report(config)
 
     def pytest_configure(self, config: Config):
         if not hasattr(config, '_ctrf'):
             setattr(config, '_ctrf', self)
 
         if config.option.ctrf and not self._report:
-            self._report = Report()
+            self._report = Report(config)
 
     @hookimpl(hookwrapper=True)
     def pytest_runtest_protocol(self, item: Item, nextitem: Item):

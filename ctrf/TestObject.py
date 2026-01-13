@@ -1,7 +1,12 @@
+from __future__ import annotations
+
 from enum import Enum
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from pytest import TestReport
+
+if TYPE_CHECKING:
+    from .Report import Report
 
 
 class TestStatus(Enum):
@@ -28,8 +33,9 @@ class TestObject:
     browser: str
     trace: str
 
-    def __init__(self, report: TestReport, worker_id: str or None = None):
+    def __init__(self, ctrf_report: Report, report: TestReport, worker_id: str | None = None):
         self.name = report.nodeid.split('[')[0]
+        self.suite_name = ctrf_report.suite_name,
         self._status = TestStatus.PENDING
         self._status = self.set_status(report)
         self.raw_status = None
@@ -87,6 +93,7 @@ class TestObject:
         if report.longrepr and len(report.longreprtext) > 0:
             self.trace = report.longreprtext
         if hasattr(report, '_ctrf_metadata'):
+            self.suite_name = report._ctrf_metadata.get('suite', self.suite_name)
             self.tags = report._ctrf_metadata.get('tags')
             self.browser = report._ctrf_metadata.get('browser')
 
@@ -95,6 +102,7 @@ class TestObject:
             'name': self.name,
             'status': self._status.value,
             'raw_status': self.raw_status,
+            'suite': self.suite_name,
             'duration': round(self.duration),
             'start': round(self.start),
             'stop': round(self.stop),
