@@ -99,7 +99,7 @@ def test_any_test_has_timestamps_xdist(ctrf_report_xdist):
         if test["name"] == "test_with_ctrf_suite_mark":
             assert test.get("suite") == ["suite_name"]
         else:
-            assert test.get("suite") == ["pytest", "test_example.py"]
+            assert test.get("suite") == ["test_example.py"]
 
 
 def test_ctrf_suite_option(pytester: Pytester):

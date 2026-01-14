@@ -36,7 +36,7 @@ class TestObject:
     def __init__(self, ctrf_report: Report, report: TestReport, worker_id: str | None = None):
         name = report.nodeid.split('[')[0].split('::')
         self.name = name[-1]
-        self.suite_name = (ctrf_report.suite_name, *name[:-1])
+        self.suite_name = (*ctrf_report.suite_name, *name[:-1])
         self._status = TestStatus.PENDING
         self._status = self.set_status(report)
         self.raw_status = None

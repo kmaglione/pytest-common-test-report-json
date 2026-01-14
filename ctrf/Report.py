@@ -14,7 +14,7 @@ class Report:
         self.prepared_tests = dict()
         self.start_time = None
         self.stop_time = None
-        self.suite_name = config.option.ctrf_suite
+        self.suite_name = (config.option.ctrf_suite,) if config.option.ctrf_suite else ()
 
     def start(self) -> None:
         self.start_time = time.time()

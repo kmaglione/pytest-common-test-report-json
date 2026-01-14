@@ -10,7 +10,6 @@ def pytest_addoption(parser: Parser):
                     help='generate test report. Report file name is optional')
     group.addoption('--ctrf-suite',
                     action='store',
-                    default='pytest',
                     help='Suite name to use in CTRF report')
 
 
